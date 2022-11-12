@@ -1,11 +1,10 @@
 const { Book, User } = require('../models');
 
-// Create the functions that fulfill the queries defined in `typeDefs.js`
 const resolvers = {
     Query: {
-        me: async (parent, context) => {
+        me: async (parent, args, context) => {
             if (context.user) {
-                return User.findOne({ _id: context.user._id }).populate('thoughts');
+                return User.findOne({ _id: context.user._id });
             }
             throw new AuthenticationError('You need to be logged in!');
         },
@@ -34,16 +33,33 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        saveBook: async (parent, { username, email, passwrod}) => {
-            
-            
-            return { token, user };
+        saveBook: async (parent, args, { user }) => {
+            if (user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: user._id },
+                    { $addToSet: { savedBooks: args } },
+                    { new: true, runValidators: true })
+
+                return updatedUser;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
+
         },
-        removeBook: async (parent, { bookID }) => {
-            
-            return { _id, username, email, bookCount, savedBooks }
+        removeBook: async (parent, bookId, { user }) => {
+            if (user) {
+                const updateUser = await User.findOneAndUpdate(
+                    { _id: user._id },
+                    { $pull: { savedBooks: args.bookId } },
+                )
+
+                return updateUser
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
+
         }
-        
+
     },
 };
 
