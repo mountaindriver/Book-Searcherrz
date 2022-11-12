@@ -40,7 +40,7 @@ export const REMOVE_BOOK = gql`
     removeBook(bookId: ID!) {
      user {
       _id
-      usernam
+      username
      }
     }
   }

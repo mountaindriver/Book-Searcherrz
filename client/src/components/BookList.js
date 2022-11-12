@@ -1,7 +1,22 @@
 import React from "react";
 import {CardColumns, Card, Button} from 'react-bootstrap';
 
+import { useMutation } from "@apollo/client";
+import { REMOVE_BOOK } from "../utils/mutations"
+
 const BookList = (userData)=>{
+
+    const [removeBook, { error }] = useMutation(REMOVE_BOOK);
+
+    const handleDeleteBook = async (bookId) => {
+        
+        try {
+            const { data } = await removeBook({bookId});
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     if (userData.length){
         return <h2>No Saved Books</h2>;
     }
