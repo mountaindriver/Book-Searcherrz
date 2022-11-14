@@ -6,14 +6,14 @@ import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
-  const [userFormState, setUserFormState] = useState({ email: '', password: '' });
+  const [formState, setFormState] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [login, { error, data }] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setUserFormState({ ...userFormState, [name]: value });
+    setFormState({ ...formState, [name]: value });
   };
 
   const handleFormSubmit = async (event) => {
@@ -36,7 +36,7 @@ const LoginForm = () => {
       console.error(e);
     }
 
-    setUserFormState({
+    setFormState({
       username: '',
       email: '',
       password: '',
@@ -56,7 +56,7 @@ const LoginForm = () => {
             placeholder='Your email'
             name='email'
             onChange={handleInputChange}
-            value={userFormData.email}
+            value={formState.email}
             required
           />
           <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
@@ -69,13 +69,13 @@ const LoginForm = () => {
             placeholder='Your password'
             name='password'
             onChange={handleInputChange}
-            value={userFormData.password}
+            value={formState.password}
             required
           />
           <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
         </Form.Group>
         <Button
-          disabled={!(userFormData.email && userFormData.password)}
+          disabled={!(formState.email && formState.password)}
           type='submit'
           variant='success'>
           Submit

@@ -1,7 +1,7 @@
 import React from "react";
 import { CardColumns, Card, Button } from 'react-bootstrap';
 
-import { useMutation } from "@apollo/client";
+import { useMutation } from '@apollo/client';
 import { REMOVE_BOOK } from "../utils/mutations"
 
 import { removeBookId } from '../utils/localStorage';
@@ -18,8 +18,8 @@ const BookList = (userData) => {
       
       //  upon success, remove book's id from localStorage
       removeBookId(bookId);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
     }
   }
 
