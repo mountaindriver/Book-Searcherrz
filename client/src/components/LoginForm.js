@@ -9,6 +9,7 @@ const LoginForm = () => {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+   // eslint-disable-next-line
   const [login, { error, data }] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
@@ -19,19 +20,12 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
     try {
-      const { data } = await login({
-        variables: { ...formState },
+      const mutationResponse = await login({
+        variables: { email: formState.email, password: formState.password },
       });
-
-      Auth.login(data.login.token);
+      const token = mutationResponse.data.login.token;
+      Auth.login(token);
     } catch (e) {
       console.error(e);
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CardColumns, Card, Button } from 'react-bootstrap';
 
 import { useMutation } from '@apollo/client';
@@ -8,12 +8,17 @@ import { removeBookId } from '../utils/localStorage';
 
 
 const BookList = (userData) => {
-
+ // eslint-disable-next-line
   const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
+  useEffect(()=>{
+    console.log(userData)
+  },[userData])
   const handleDeleteBook = async (bookId) => {
 
+
     try {
+       // eslint-disable-next-line
       const { data } = await removeBook({ bookId });
       
       //  upon success, remove book's id from localStorage
@@ -23,7 +28,7 @@ const BookList = (userData) => {
     }
   }
 
-  if (userData.length) {
+  if (!userData.length) {
     return <h2>No Saved Books</h2>;
   }
 
