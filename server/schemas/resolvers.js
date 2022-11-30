@@ -38,9 +38,7 @@ const resolvers = {
             return { token, user };
         },
         addBook: async (parent, { authors, bookId, description, image, link, title }, context) => {
-            console.log(context.user);
             if (context.user) {
-               console.log('wobble wobble');
                 await User.findOneAndUpdate(
                     { _id: context.user._id },
                     { $addToSet: {
@@ -65,14 +63,13 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!(addBook)');
 
         },
-        removeBook: async (parent, { args }, { user }) => {
-            if (user) {
+        removeBook: async (parent, { args }, context) => {
+            if (context.user) {
                 const updateUser = await User.findOneAndUpdate(
-                    { _id: user._id },
+                    { _id: context.user._id },
                     { $pull: { savedBooks: { bookId: args.bookId } } },
                     { new: true }
                 )
-
                 return updateUser
             };
 
